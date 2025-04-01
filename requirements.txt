@@ -1,5 +1,2 @@
-streamlit
-geocoder
-plyer
-random
-platform
+streamlit==1.19.0
+geocoder==1.38.1
