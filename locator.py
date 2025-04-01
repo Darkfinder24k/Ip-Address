@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import random
+import platform
 
 # Fake hacked messages
 hacked_messages = [
@@ -30,11 +31,18 @@ if st.button("Send") and user_input:
     if st.session_state.message_count >= 20:
         st.error("Critical Error! Shutting down...")
         
-        # Shutdown command (for Windows or Android)
+        # Shutdown for different OS
         try:
-            if os.name == 'nt':  # Windows
+            system_platform = platform.system()
+            if system_platform == "Windows":  # Windows shutdown
                 os.system("shutdown /s /t 5")
-            else:  # Android (Termux required)
+            elif system_platform == "Linux":  # Linux shutdown
+                os.system("shutdown -h now")
+            elif system_platform == "Darwin":  # macOS shutdown
+                os.system("sudo shutdown -h now")
+            elif system_platform == "Android":  # Android (via Termux)
                 os.system("termux-shutdown")
+            else:
+                st.error("Shutdown not supported on this OS.")
         except Exception as e:
             st.error(f"Shutdown failed: {e}")
